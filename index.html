@@ -481,6 +481,54 @@ function finish(){
   }
   document.getElementById("WL").innerHTML = wh;
 
+// Fecha visible
+var d = new Date();
+var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+
+// Mantén esto si aún quieres mostrar el texto al usuario
+var t = "ENCUESTA — NOMBRE DE MARCA DE CAFÉ\n";
+t += "Participante: " + voter + "\n";
+t += "Fecha: " + fecha + "\n\n";
+t += "MIS 3 NOMBRES FAVORITOS:\n";
+for (var i = 0; i < active.length; i++) {
+  t += (i + 1) + ". " + active[i] + "\n";
+}
+t += "\nHISTORIAL:\n";
+for (var i = 0; i < hist.length; i++) {
+  t += "Ronda " + hist[i].rn + " (" + hist[i].label + "): "
+    + hist[i].chosen.join(", ") + "\n";
+}
+
+// Nuevo: enviar a Google Sheet
+const payload = {
+  voter: voter,
+  fecha: fecha,
+  active: active, // tus 3 nombres favoritos
+  hist: hist      // historial completo
+};
+
+fetch("https://script.google.com/macros/s/AKfycby7_ELH6chh1pr-dl1Lonpx8CYS3ObJEk466YCZwDwpeBX2AoudVBDCux-gwnpbJjdK4g/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(payload)
+})
+.then(r => r.json())
+.then(resp => {
+  if (resp.ok) {
+    alert("Tus respuestas fueron guardadas correctamente.");
+  } else {
+    alert("Hubo un error al guardar: " + resp.error);
+  }
+})
+.catch(err => {
+  console.error(err);
+  alert("No se pudo enviar la información.");
+});
+
+  //End send
+
   // Copy block
   var d = new Date();
   var fecha = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
