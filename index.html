@@ -39,6 +39,25 @@ body{
 }
 .wrap{max-width:860px;margin:0 auto}
 
+ /*Formulario oculto*/ 
+
+  <form id="sheetForm"
+      action="https://script.google.com/macros/s/AKfycbznR480c5HVcNCODkt0XE_EgudF2SRT3lAKOb2kZjwWFSPhPg-nd0oe9zBaDqQqSt8rpA/exec"
+  
+      method="POST"
+      target="hidden_iframe"
+      style="display:none;">
+
+  <input type="hidden" name="voter" id="form_voter">
+  <input type="hidden" name="fecha" id="form_fecha">
+  <input type="hidden" name="top1" id="form_top1">
+  <input type="hidden" name="top2" id="form_top2">
+  <input type="hidden" name="top3" id="form_top3">
+  <input type="hidden" name="historial" id="form_historial">
+</form>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+  
 /* --- Header ----------------------------------------------- */
 .hero{text-align:center;padding:28px 12px 18px}
 .bean{
@@ -497,34 +516,44 @@ function finish(){
   document.getElementById("CB").textContent = t;
 
   //send to google sheet
-document.getElementById("CP").addEventListener("click", function () {
+
+document.getElementById("CP").addEventListener("click", function (event) {
+  event.preventDefault();
 
   var d = new Date();
   var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
 
-  const payload = new URLSearchParams();
-  payload.append("voter", voter || "");
-  payload.append("fecha", fecha || "");
-  payload.append("top1", active[0] || "");
-  payload.append("top2", active[1] || "");
-  payload.append("top3", "tercero" || "");
-  payload.append("historial", JSON.stringify(hist || []));
+  // Mantén tu lógica existente si quieres seguir mostrando el resumen
+  document.getElementById("WL").innerHTML = wh;
 
-  fetch("https://script.google.com/macros/s/AKfycbyg08HFl6-70_bSZc87L0CjNPIQVE0ke5Yxnd_qJ0iOEVfAIARTU0MhWixBlm0Z8yo7/exec", {
-    method: "POST",
-    body: payload
-  })
-  .then(response => response.text())
-  .then(result => {
-    console.log("Respuesta:", result);
-    alert("✅ Tus respuestas fueron enviadas");
-  })
-  .catch(error => {
-    console.error("Error:", error);
-    alert("❌ No se pudieron enviar los datos");
-  });
+  var t = "ENCUESTA — NOMBRE DE MARCA DE CAFÉ\n";
+  t += "Participante: " + voter + "\n";
+  t += "Fecha: " + fecha + "\n\n";
+  t += "MIS 3 NOMBRES FAVORITOS:\n";
+  for (var i = 0; i < active.length; i++) {
+    t += (i + 1) + ". " + active[i] + "\n";
+  }
+  t += "\nHISTORIAL:\n";
+  for (var i = 0; i < hist.length; i++) {
+    t += "Ronda " + hist[i].rn + " (" + hist[i].label + "): "
+      + hist[i].chosen.join(", ") + "\n";
+  }
 
+  // Rellenar formulario oculto
+  document.getElementById("form_voter").value = voter || "";
+  document.getElementById("form_fecha").value = fecha || "";
+  document.getElementById("form_top1").value = active[0] || "";
+  document.getElementById("form_top2").value = active[1] || "";
+  document.getElementById("form_top3").value = active[2] || "";
+  document.getElementById("form_historial").value = JSON.stringify(hist || []);
+
+  // Enviar al Apps Script
+  document.getElementById("sheetForm").submit();
+
+  alert("Tus respuestas fueron enviadas.");
 });
+  
+  
   //End send
 }
 
