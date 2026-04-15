@@ -288,12 +288,11 @@ var NAMES_FLAT = [
   "Terra Altis",
   "Buen amor",
   "Con Alma",
-  "Mi vida",
-  "Cumanday"
+  "Mi vida y Cumanday"
 ];
 
 var ROUNDS = [
-  {to:6, label:"14 → 6", desc:"De los 14 nombres, elige los 6 que más resuenen contigo."},
+  {to:6, label:"13 → 6", desc:"De los 13 nombres, elige los 6 que más resuenen contigo."},
   {to:3, label:"6 → 3",  desc:"Última ronda: de esos 6, elige tus 3 favoritos definitivos."}
 ];
 
@@ -480,8 +479,9 @@ function finish(){
        + esc(active[i]) + '</div>';
   }
   document.getElementById("WL").innerHTML = wh;
-  
+
   // Copy block
+  var d = new Date();
   var fecha = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
   var t = "ENCUESTA — NOMBRE DE MARCA DE CAFÉ\n";
   t += "Participante: " + voter + "\n";
@@ -496,7 +496,6 @@ function finish(){
   document.getElementById("CB").textContent = t;
 }
 
-  
 /* ---------------- Boot ---------------- */
 if(document.readyState === "loading"){
   document.addEventListener("DOMContentLoaded", init);
