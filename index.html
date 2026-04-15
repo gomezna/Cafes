@@ -495,6 +495,24 @@ function finish(){
       + hist[i].chosen.join(", ") + "\n";
   }
   document.getElementById("CB").textContent = t;
+
+  //send to google sheet
+
+  fetch("https://script.google.com/macros/s/AKfycby7_ELH6chh1pr-dl1Lonpx8CYS3ObJEk466YCZwDwpeBX2AoudVBDCux-gwnpbJjdK4g/exec", {
+  method: "POST",
+  body: new URLSearchParams({
+    voter: "Natalia",
+    fecha: "15/4/2026",
+    top1: "Nombre A",
+    top2: "Nombre B",
+    top3: "Nombre C",
+    historial: "[]"
+  })
+})
+.then(r => r.text())
+.then(console.log)
+.catch(console.error);
+  //End send
 }
 
 /* ---------------- Boot ---------------- */
