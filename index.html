@@ -481,33 +481,6 @@ function finish(){
   }
   document.getElementById("WL").innerHTML = wh;
   
-//Send
-var d = new Date();
-var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
-
-const payload = new URLSearchParams();
-payload.append("voter", voter || "");
-payload.append("fecha", fecha || "");
-payload.append("top1", active[0] || "");
-payload.append("top2", active[1] || "");
-payload.append("top3", active[2] || "");
-payload.append("historial", JSON.stringify(hist || []));
-
-fetch("https://script.google.com/macros/s/AKfycby7_ELH6chh1pr-dl1Lonpx8CYS3ObJEk466YCZwDwpeBX2AoudVBDCux-gwnpbJjdK4g/exec", {
-  method: "POST",
-  body: payload
-})
-.then(response => response.text())
-.then(result => {
-  alert("Tus respuestas fueron guardadas correctamente.");
-  console.log(result);
-})
-.catch(error => {
-  console.error("Error al enviar:", error);
-  alert("No se pudieron enviar los datos.");
-});
-  //End send
-
   // Copy block
   var fecha = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
   var t = "ENCUESTA — NOMBRE DE MARCA DE CAFÉ\n";
@@ -523,6 +496,7 @@ fetch("https://script.google.com/macros/s/AKfycby7_ELH6chh1pr-dl1Lonpx8CYS3ObJEk
   document.getElementById("CB").textContent = t;
 }
 
+  
 /* ---------------- Boot ---------------- */
 if(document.readyState === "loading"){
   document.addEventListener("DOMContentLoaded", init);
