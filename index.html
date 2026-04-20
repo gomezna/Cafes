@@ -216,7 +216,7 @@ h1{
   <form id="sheetForm"
   action="https://script.google.com/macros/s/AKfycbxzOXXzfFVJABzDQaSuBCt2s90TnrIpdn5ncOWgYzMVTPY7lRoQtRL-SRPv-2GbfQVf/exec"
   method="POST"
-  target="_blank"
+  target="_self"
   style="display:none;">
 
   <input type="hidden" name="voter" id="form_voter">
@@ -334,7 +334,6 @@ function bind(id, fn){
   var el = document.getElementById(id);
   if(!el) return;
   el.onclick = fn;
-  el.ontouchstart = function(e){ e.preventDefault(); fn(); };
 }
 
 /* ---------------- Actions ---------------- */
@@ -469,6 +468,13 @@ function esc(s){
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
+/*--------------funtion doGet----------------*/
+  function doGet(e) {
+  return ContentService
+    .createTextOutput("Esta página recibe respuestas de la encuesta. Si has llegado aquí directamente, puedes cerrar esta ventana.")
+    .setMimeType(ContentService.MimeType.TEXT);
+}
+  
 /* ---------------- Finish ---------------- */
 function finish(){
   document.getElementById("P1").className = "box hide";
