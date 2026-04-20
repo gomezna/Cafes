@@ -366,6 +366,13 @@ function doClear(){ sel = {}; draw(); }
  function sendResult(){
   var d = new Date();
   var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+  var payload = {
+    voter: voter || "",
+    fecha: fecha || "",
+    top1: active[0] || "",
+    top2: active[1] || "",
+    top3: active[2] || "",
+    historial: JSON.stringify(hist || [])
 
   document.getElementById("form_voter").value = voter || "";
   document.getElementById("form_fecha").value = fecha || "";
