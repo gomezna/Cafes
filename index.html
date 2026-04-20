@@ -212,12 +212,13 @@ h1{
 </style>
 </head>
 <body>
-  <!-- Formulario  -->
+  <!-- Formulario oculto -->
   <form id="sheetForm"
   action="https://script.google.com/macros/s/AKfycbxzOXXzfFVJABzDQaSuBCt2s90TnrIpdn5ncOWgYzMVTPY7lRoQtRL-SRPv-2GbfQVf/exec"
   method="POST"
-  target="h_blank"
+  target="_blank"
   style="display:none;">
+
   <input type="hidden" name="voter" id="form_voter">
   <input type="hidden" name="fecha" id="form_fecha">
   <input type="hidden" name="top1" id="form_top1">
@@ -225,7 +226,8 @@ h1{
   <input type="hidden" name="top3" id="form_top3">
   <input type="hidden" name="historial" id="form_historial">
 </form>
-  <!-- Final Formulario -->
+<iframe name="hidden_iframe" style="width:100%;height:120px;border:1px solid #ccc;"></iframe>
+  <!-- Final Formulario oculto -->
 <div class="wrap">
 
   <div class="hero">
@@ -385,18 +387,36 @@ function doClear(){ sel = {}; draw(); }
     top2: active[1] || "",
     top3: active[2] || "",
     historial: JSON.stringify(hist || [])
+  };
 
-  document.getElementById("form_voter").value = voter || "";
-  document.getElementById("form_fecha").value = fecha || "";
-  document.getElementById("form_top1").value = active[0] || "";
-  document.getElementById("form_top2").value = active[1] || "";
-  document.getElementById("form_top3").value = active[2] || "";
-  document.getElementById("form_historial").value = JSON.stringify(hist || []);
+  console.log("Payload a enviar:", payload);
+
+  document.getElementById("form_voter").value = payload.voter;
+  document.getElementById("form_fecha").value = payload.fecha;
+  document.getElementById("form_top1").value = payload.top1;
+  document.getElementById("form_top2").value = payload.top2;
+  document.getElementById("form_top3").value = payload.top3;
+  document.getElementById("form_historial").value = payload.historial;
 
   document.getElementById("sheetForm").submit();
 }
+/*------------------FbCopy - Error- ----------------*/
+  function fbCopy(t){
+  var ta = document.createElement("textarea");
+  ta.value = t;
+  ta.style.cssText = "position:fixed;left:-9999px;top:0";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
 
+  try{
+    document.execCommand("copy");
+  } catch(e){
+    console.error("No se pudo copiar manualmente", e);
+  }
 
+  document.body.removeChild(ta);
+}
 /* ---------------- Draw ---------------- */
 function countSel(){
   var c = 0;
@@ -517,6 +537,34 @@ if(document.readyState === "loading"){
 } else {
   init();
 }
+</script>
+  <!-- TEST DIRECTO -->
+<h3>Test directo</h3>
+
+<form action="https://script.google.com/macros/s/AKfycbz1omPTsupgfvCvaPpH9J6QicLf1OIqvUIpIai8bjUO8V_9hKOCYO9ul7zKWxcLEQ5rLA/exec"
+      method="POST"
+      target="_blank">
+
+  <input type="hidden" name="voter" value="TEST_NATALIA">
+  <input type="hidden" name="fecha" value="20/04/2026">
+  <input type="hidden" name="top1" value="Despertar">
+  <input type="hidden" name="top2" value="Cumanday">
+  <input type="hidden" name="top3" value="Buen querer">
+
+  <input type="hidden"
+         name="historial"
+         value='[{"rn":1,"label":"15 → 6","chosen":["Despertar","Cumanday","Buen querer"]}]'>
+
+  <button type="submit">
+    Enviar test directo
+  </button>
+
+</form>
+
+<iframe name="test_iframe"
+        style="width:100%;height:120px;border:1px solid #ccc;">
+</iframe>
+
 </body>
 </body>
 </html>
